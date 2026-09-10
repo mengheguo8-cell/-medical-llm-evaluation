@@ -1,141 +1,161 @@
 # 🩺 Medical LLM Evaluation
 
+> A pilot framework for evaluating Large Language Models in biomedical question answering, with a focus on cancer immunotherapy, CAR-T therapy, oncolytic viruses, cytokine biology, and evidence-based reasoning.
+
 ## 📌 Project Overview
 
-This project explores the evaluation of Large Language Models (LLMs) in biomedical and healthcare scenarios, with a particular focus on cancer immunotherapy.
+Large Language Models are increasingly used in biomedical and healthcare-related scenarios, but factual correctness alone is not sufficient for reliable medical AI.
 
-The project aims to develop a structured evaluation framework for assessing the reliability and professional performance of LLM-generated medical responses.
+This project develops a structured pilot evaluation workflow to assess LLM-generated biomedical responses across multiple dimensions, including factual accuracy, completeness, scientific reasoning, evidence consistency, hallucination risk, and safety.
 
-Evaluation focuses on several key dimensions:
-
-- Factual Accuracy
-- Medical Completeness
-- Evidence Consistency
-- Clinical / Scientific Reasoning
-- Hallucination Risk
-- Response Safety
+The current pilot focuses on cancer immunotherapy and uses domain-specific benchmark questions combined with multiple prompting strategies.
 
 ---
 
-## 🧬 Biomedical Focus
+## 🎯 Objectives
 
-The evaluation dataset focuses on biomedical topics related to my research background, including:
+The project explores three questions:
 
-- CAR-T Cell Therapy
-- Cancer Immunotherapy
-- Oncolytic Virus Therapy
-- Tumor Microenvironment
-- Cytokine Biology
-- IL-23-mediated Immune Regulation
+1. How reliably can an LLM answer biomedical questions of different reasoning difficulty?
+2. Can structured prompting improve scientific reasoning and response completeness?
+3. Can evidence-aware prompting reduce unsupported conclusions and hallucination risk?
 
 ---
 
-## 🤖 LLM Evaluation Framework
+## 🧬 Biomedical Benchmark
 
-Medical questions are designed based on biomedical literature and real scientific research scenarios.
+The pilot benchmark currently contains 10 questions covering:
 
-Each model response is evaluated using a structured rubric:
+- CAR-T cell therapy
+- Tumor immunology
+- Oncolytic viruses
+- Cytokine biology
+- IL-23 biology
+- Biomedical evidence evaluation
+
+Questions are categorized by task type and difficulty level.
+
+Benchmark dataset:
+
+`data/medical_llm_evaluation_dataset.csv`
+
+---
+
+## 🤖 Prompt Strategies
+
+Three prompting strategies were designed for comparison.
+
+### 1. Zero-shot
+
+Baseline biomedical question answering with minimal instruction.
+
+### 2. Structured Reasoning
+
+The model is instructed to organize its response into:
+
+- Core Answer
+- Biological Mechanism
+- Scientific Rationale
+- Limitations / Uncertainty
+
+### 3. Evidence-aware
+
+The model is explicitly instructed to distinguish established evidence from interpretation, acknowledge uncertainty, and avoid unsupported causal conclusions or fabricated references.
+
+Prompt definitions are available in:
+
+`prompts/evaluation_prompts.md`
+
+---
+
+## 📏 Evaluation Framework
+
+Model responses are manually evaluated using a predefined pilot rubric.
+
+Evaluation dimensions include:
 
 | Dimension | Description |
 |---|---|
-| Accuracy | Whether biomedical facts are correct |
-| Completeness | Whether key information is sufficiently covered |
-| Evidence | Whether conclusions are consistent with scientific evidence |
-| Reasoning | Whether the reasoning process is scientifically coherent |
-| Hallucination | Whether unsupported or fabricated information is generated |
-| Safety | Whether potentially misleading medical claims are avoided |
+| Factual Accuracy | Correctness of biomedical information |
+| Completeness | Coverage of important concepts |
+| Scientific Reasoning | Quality of mechanistic and logical reasoning |
+| Evidence Consistency | Alignment between claims and available evidence |
+| Hallucination Control | Avoidance of unsupported or fabricated claims |
+| Safety | Avoidance of misleading medical conclusions |
+
+Reference answers and evaluation criteria are stored in:
+
+`docs/reference_answers.md`
+
+`docs/evaluation_rubric.md`
 
 ---
 
-## 🔬 Evaluation Workflow
+## 📊 Pilot Evaluation Results
 
-Medical Question  
-↓  
-Reference Evidence  
-↓  
-Prompt Design  
-↓  
-LLM Response  
-↓  
-Expert-based Evaluation  
-↓  
-Error Classification  
-↓  
-Evaluation Results
+The initial pilot evaluated three benchmark questions representing increasing reasoning complexity:
 
----
+- Q001 — Basic CAR-T mechanism (Easy)
+- Q002 — CAR-T limitations in solid tumors (Medium)
+- Q010 — Interpretation of increased IFN-γ after combination immunotherapy (Hard / Evidence Evaluation)
 
-## 📊 Planned Dataset Structure
+Each question was evaluated using all three prompt strategies.
 
-Each evaluation sample contains:
+### Average Overall Score
 
-- Question
-- Biomedical domain
-- Difficulty level
-- Reference answer
-- Reference literature
-- Model response
-- Accuracy score
-- Completeness score
-- Evidence score
-- Hallucination flag
-- Error category
+| Prompt Strategy | Average Score |
+|---|---:|
+| Zero-shot | 4.61 |
+| Structured Reasoning | 5.00 |
+| Evidence-aware | 5.00 |
+
+![Prompt Strategy Performance](results/figures/prompt_strategy_comparison.png)
+
+### Preliminary Observation
+
+In this small pilot, zero-shot prompting already produced high factual accuracy on biomedical questions.
+
+Structured and evidence-aware prompting primarily improved response organization, mechanistic reasoning, completeness, and communication of evidentiary boundaries.
+
+Because the current pilot contains only three evaluated questions, these results should be interpreted as exploratory rather than as evidence of general model superiority.
 
 ---
 
-## 🧠 Error Taxonomy
+## 🔬 Example: Evidence Evaluation
 
-Model errors are categorized into:
+One benchmark question asks whether increased IFN-γ following combination immunotherapy is sufficient to conclude improved antitumor efficacy.
 
-- Factual Error
-- Knowledge Gap
-- Reasoning Error
-- Evidence Misinterpretation
-- Terminology Error
-- Unsupported Claim
-- Hallucination
+A reliable response should distinguish:
 
----
+**immune biomarker change ≠ demonstrated therapeutic efficacy**
 
-## 🛠 Skills & Tools
+Additional evidence such as tumor growth, survival, functional immune activity, appropriate controls, effect size, and statistical uncertainty may be required.
 
-- Large Language Models
-- Prompt Engineering
-- Medical LLM Evaluation
-- Biomedical Literature Retrieval
-- PubMed
-- Python
-- Pandas
-- Data Analysis
-- Cancer Immunology
+This task is designed to evaluate whether an LLM can avoid causal overinterpretation of biomedical observations.
 
 ---
 
-## 👩‍🔬 About Me
+## 📂 Project Structure
 
-Biomedical master's student with research experience in cancer immunotherapy, CAR-T cell therapy and oncolytic viruses.
-
-My current interests focus on the intersection of **Biomedical Science × Artificial Intelligence**, particularly Medical LLM evaluation, biomedical knowledge extraction and AI-assisted scientific research.
-
----
-
-## 🚀 Project Status
-
-🚧 Work in progress
-
-Current development:
-
-- [x] Evaluation framework design
-- [x] Biomedical domain definition
-- [ ] Medical question dataset construction
-- [ ] Reference answer annotation
-- [ ] LLM response collection
-- [ ] Error analysis
-- [ ] Python-based evaluation analysis
-
----
-
-## ⚠️ Disclaimer
-
-This repository is intended for research and educational purposes only and does not provide medical diagnosis or treatment advice.
-
+```text
+medical-llm-evaluation/
+│
+├── data/
+│   ├── medical_llm_evaluation_dataset.csv
+│   └── model_responses.csv
+│
+├── docs/
+│   ├── evaluation_rubric.md
+│   └── reference_answers.md
+│
+├── prompts/
+│   └── evaluation_prompts.md
+│
+├── notebooks/
+│   └── evaluation_analysis.py
+│
+├── results/
+│   └── figures/
+│       └── prompt_strategy_comparison.png
+│
+└── README.md

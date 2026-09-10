@@ -1,0 +1,1 @@
+id,domain,question_type,difficulty,question,reference_answer,evidence,model_response,accuracy_score,completeness_score,evidence_score,hallucination_flag,error_category
